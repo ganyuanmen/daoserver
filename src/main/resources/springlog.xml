@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- 控制台输出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level> <!-- 日志过滤级别 -->
+        </filter>
+        <encoder>
+            <pattern>%date %-5level [${HOSTNAME} %thread] %caller{1}%msg%n</pattern><!-- 格式化输出 -->
+            <charset>utf8</charset> <!-- 输出编码 -->
+        </encoder>
+    </appender>
+
+    <appender name="DEBUGGER"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/debugger.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/debugger/%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>300MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>%date %-5level %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <prudent>false</prudent>
+    </appender>
+
+
+    <appender name="CALLBACK"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/callback.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/callback/%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>300MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>%date %-5level %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <prudent>false</prudent>
+    </appender>
+
+    <appender name="ERROR"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/error/%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>900MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>%date %-5level %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <prudent>false</prudent>
+    </appender>
+
+
+
+
+    基础日志输出级别
+<!--    <root level="INFO">-->
+<!--        <appender-ref ref="CONSOLE"/>-->
+<!--    </root>-->
+
+    <logger name="com.dao.daoserver" level="INFO" additivity="false">
+        <appender-ref ref="DEBUGGER" />
+    </logger>
+
+<!--    <logger name="com.xinchan.g5.service.units.CallBackInfo" level="INFO" additivity="false">-->
+<!--        <appender-ref ref="CALLBACK" />-->
+<!--    </logger>-->
+
+
+<!--    <logger name="com.xinchan.g5.service.units.Errorlog" level="INFO" additivity="false">-->
+<!--        <appender-ref ref="ERROR" />-->
+<!--    </logger>-->
+
+</configuration>

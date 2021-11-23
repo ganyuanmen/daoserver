@@ -36,11 +36,11 @@ public class DataController {
     };
 
     private  static ExecutorService exec = Executors.newFixedThreadPool(1);
-    @Autowired
-    private IDataservice iDataservice;
-
-    @Autowired
-    private ADaoMapper aDaoMapper;
+//    @Autowired
+//    private IDataservice iDataservice;
+//
+//    @Autowired
+//    private ADaoMapper aDaoMapper;
 
     @Autowired
     TDaoMapper tDaoMapper;

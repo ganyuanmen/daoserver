@@ -12,12 +12,6 @@ public class WebController {
         return "main";
     }
 
-    @RequestMapping("/test")
-    String test()
-    {
-        return "test";
-    }
-
 
 
 }
