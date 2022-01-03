@@ -43,6 +43,8 @@ public class DataController {
 //    private ADaoMapper aDaoMapper;
 
     @Autowired
+    VDaotokenMapper daotokenMapper;
+    @Autowired
     TDaoMapper tDaoMapper;
 
     @Autowired
@@ -68,6 +70,17 @@ public class DataController {
 
     @Autowired
     private TT2uMapper tt2uMapper;
+
+    @Autowired
+    private VSwapMapper vSwapMapper;
+
+    @RequestMapping("/getSwapList")
+    public IPage<VSwap> getSwapList(@RequestBody RequstSwap requstSwap)
+    {
+
+        return  vSwapMapper.selectPage (gene_page1(requstSwap) , gene_condition1(requstSwap));
+
+    }
 
 
     @RequestMapping(value = "/updateIADD", method = RequestMethod.POST)
@@ -159,6 +172,17 @@ public class DataController {
 
        return  list;
     }
+
+
+    @RequestMapping("/getAllOrgList")
+    public List<Org> getAllOrgList(String address1)
+    {
+
+        List<Org> list=tDaoMapper.getOrgList("select org_id,org_name from t_org where org_manager='"+address1.replaceAll(" ","")+"'");
+
+        return  list;
+    }
+
     @RequestMapping("/getTokenDaoList")
     public List getTokenDaoList()
     {
@@ -187,6 +211,13 @@ public class DataController {
         TDao curDao=  tDaoMapper.selectOne(wrapper);
        if(curDao==null) return  new TDao();
        else  return  curDao;
+    }
+
+
+    @RequestMapping(value = "/getOrg", method = RequestMethod.POST)
+    public Long getOrg(@RequestBody Org obj)
+    {
+        return tDaoMapper.getMaxBlock("select ifnull(max(block_num),0) from t_org where org_name='"+obj.getOrgName().replaceAll(" ","")+"'");
     }
 
     @RequestMapping(value = "/updateSetLogo", method = RequestMethod.POST)
@@ -337,6 +368,7 @@ public class DataController {
         atodoPage.setOrders(olist);
         return atodoPage;
     }
+
     private  LambdaQueryWrapper<VDao> gene_condition(RequetDao condition)
     {
         LambdaQueryWrapper<VDao> atodoLambdaQueryWrapper = Wrappers.lambdaQuery();
@@ -346,4 +378,78 @@ public class DataController {
         return  atodoLambdaQueryWrapper;
 
     }
+
+    private Page<VSwap> gene_page1(RequstSwap condition)
+    {
+        Page<VSwap> atodoPage = new Page<>(condition.getPageNum() , condition.getPageSize());
+        List<OrderItem> olist=new ArrayList<>();
+        if(condition.getOrder()!=null)
+        {
+            if(condition.getOrderType()==null) olist.add(OrderItem.asc(condition.getOrder()));
+            else if(condition.getOrderType().equals("asc"))   olist.add(OrderItem.asc(condition.getOrder()));
+            else  olist.add(OrderItem.desc(condition.getOrder()));
+        } else
+        {
+            olist.add(OrderItem.asc("block_num"));
+        }
+        atodoPage.setOrders(olist);
+        return atodoPage;
+    }
+    private  LambdaQueryWrapper<VSwap> gene_condition1(RequstSwap condition)
+    {
+        LambdaQueryWrapper<VSwap> atodoLambdaQueryWrapper = Wrappers.lambdaQuery();
+       // if(condition.getTitle()!=null) {
+            atodoLambdaQueryWrapper.eq(VSwap::getMyAddress, condition.getAddress());
+        //}
+        return  atodoLambdaQueryWrapper;
+
+    }
+
+
+    @RequestMapping("/getTokenList")
+    public List<TokenUser> getTokenList(String address1)
+    {
+        List<TokenUser> list=tDaoMapper.getTokenList("select token_id,dao_symbol,token_cost from v_tokenuser where token_manager='"+address1.replaceAll(" ","")+"'");
+        return  list;
+    }
+
+    @RequestMapping("/getMyDaoList")
+    public List<TDao> getMyDaoList(String address1) {
+        QueryWrapper<TDao> wrapper = new QueryWrapper<>();
+        wrapper.eq("dao_manager", address1);
+        List<TDao> obj = tDaoMapper.selectList(wrapper);
+        return obj;
+    }
+
+
+
+
+    @RequestMapping("/getDataToken")
+    public IPage<VDaotoken> getDataToken(@RequestBody RequetDao requetDao)
+    {
+        return  daotokenMapper.selectPage (gene_pagetoken(requetDao) , gene_condition_token(requetDao));
+    }
+
+
+    private  LambdaQueryWrapper<VDaotoken> gene_condition_token(RequetDao condition)
+    {
+        LambdaQueryWrapper<VDaotoken> atodoLambdaQueryWrapper = Wrappers.lambdaQuery();
+        if(condition.getTitle()!=null) {
+            atodoLambdaQueryWrapper.like(VDaotoken::getDaoSymbol,condition.getTitle());
+        }
+        if(condition.getTokenId()!=null) {
+            atodoLambdaQueryWrapper.ge(VDaotoken::getTokenId,condition.getTokenId());
+        }
+        return  atodoLambdaQueryWrapper;
+
+    }
+
+    private Page<VDaotoken> gene_pagetoken(RequetDao condition) {
+        Page<VDaotoken> atodoPage11 = new Page<>(condition.getPageNum(), condition.getPageSize());
+        List<OrderItem> olist = new ArrayList<>();
+        olist.add(OrderItem.asc("token_id"));
+        atodoPage11.setOrders(olist);
+        return atodoPage11;
+    }
+
 }

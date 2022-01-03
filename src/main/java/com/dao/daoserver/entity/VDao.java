@@ -41,10 +41,12 @@ public class VDao implements Serializable {
     private String daoLogo;
 
     private String osAddress;
-
+    private String orgAddress;
+    private Integer orgId;
+    private String orgName;
     private Integer tokenId;
-
-    private int daoIndex;
+    private Integer isToken;
+    private Integer daoIndex;
     private double utokenCost;
 
 
