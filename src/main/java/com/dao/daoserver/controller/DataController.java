@@ -74,6 +74,9 @@ public class DataController {
     @Autowired
     private VSwapMapper vSwapMapper;
 
+    @Autowired
+    private  VProMapper vProMapper;
+
     @RequestMapping("/getSwapList")
     public IPage<VSwap> getSwapList(@RequestBody RequstSwap requstSwap)
     {
@@ -411,6 +414,28 @@ public class DataController {
     {
         List<TokenUser> list=tDaoMapper.getTokenList("select token_id,dao_symbol,token_cost from v_tokenuser where token_manager='"+address1.replaceAll(" ","")+"'");
         return  list;
+    }
+
+    @RequestMapping("/getpro")
+    public List<VPro> getpro(String address1)
+    {
+        List<VPro> list=tDaoMapper.getpro("CALL get_pro('"+address1.replaceAll(" ","")+"')");
+        return  list;
+    }
+
+    @RequestMapping("/getprobyname")
+    public int getprobyname(String proName)
+    {
+       int re=tDaoMapper.getprobyname("SELECT COUNT(*) FROM t_pro WHERE pro_name='"+proName.replaceAll(" ","")+"'");
+        return  re;
+    }
+
+    @RequestMapping("/getprovote")
+    public int getprovote(String address,int proIndex)
+    {
+        int re=tDaoMapper.getprobyname("SELECT COUNT(*) FROM t_provote WHERE pro_del='"+address.replaceAll(" ","")
+                +"' AND pro_index="+proIndex);
+        return  re;
     }
 
     @RequestMapping("/getMyDaoList")
