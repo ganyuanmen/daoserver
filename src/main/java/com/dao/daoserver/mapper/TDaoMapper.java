@@ -40,6 +40,11 @@ public interface TDaoMapper extends BaseMapper<TDao> {
     @ResultType(List.class)
     List<VPro> getpro(@Param("sql") String sql);
 
+
+    @Select({"${sql}"})
+    @ResultType(List.class)
+    List<VApp> getApp(@Param("sql") String sql);
+
     @Select({"${sql}"})
     @ResultType(Integer.class)
     int getprobyname(@Param("sql") String sql);

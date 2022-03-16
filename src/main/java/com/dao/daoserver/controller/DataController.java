@@ -74,8 +74,8 @@ public class DataController {
     @Autowired
     private VSwapMapper vSwapMapper;
 
-    @Autowired
-    private  VProMapper vProMapper;
+
+
 
     @RequestMapping("/getSwapList")
     public IPage<VSwap> getSwapList(@RequestBody RequstSwap requstSwap)
@@ -423,10 +423,24 @@ public class DataController {
         return  list;
     }
 
+    @RequestMapping("/getapp")
+    public List<VApp> getapp(String address1)
+    {
+        List<VApp> list=tDaoMapper.getApp("SELECT * FROM v_app WHERE app_manager='"+address1.replaceAll(" ","")+"'");
+        return  list;
+    }
+
     @RequestMapping("/getprobyname")
     public int getprobyname(String proName)
     {
        int re=tDaoMapper.getprobyname("SELECT COUNT(*) FROM t_pro WHERE pro_name='"+proName.replaceAll(" ","")+"'");
+        return  re;
+    }
+
+    @RequestMapping("/getappbyname")
+    public int getappbyname(String appName)
+    {
+        int re=tDaoMapper.getprobyname("SELECT COUNT(*) FROM t_app WHERE app_name='"+appName.replaceAll(" ","")+"'");
         return  re;
     }
 
