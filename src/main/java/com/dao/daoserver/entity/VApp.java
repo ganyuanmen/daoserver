@@ -41,5 +41,7 @@ public class VApp implements Serializable {
 
     private String appTime;
 
+    private Integer appIsInstall;
+
 
 }

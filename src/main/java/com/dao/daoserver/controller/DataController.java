@@ -127,6 +127,12 @@ public class DataController {
     }
 
 
+    @RequestMapping("/getDaoById")
+    public VDao getDaoById(int daoId)
+    {
+        return  vDaoMapper.selectById (daoId);
+    }
+
 
     @RequestMapping("/getData")
     public IPage<VDao> getData(@RequestBody RequetDao requetDao)
