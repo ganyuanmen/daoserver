@@ -450,6 +450,14 @@ public class DataController {
         return  re;
     }
 
+
+    @RequestMapping("/getappbyindex")
+    public int getappbyindex(int _daoId,int _appId)
+    {
+        int re=tDaoMapper.getprobyname("SELECT COUNT(*) FROM t_application WHERE dao_id="+_daoId+" AND app_id="+_appId);
+        return  re;
+    }
+
     @RequestMapping("/getprovote")
     public int getprovote(String address,int proIndex)
     {
